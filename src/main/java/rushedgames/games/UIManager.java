@@ -13,6 +13,8 @@ public class UIManager {
         
         this.scene = scene;
         font = new Font("arial", Font.BOLD, 31);
+        points = "Points: 0";
+        bodySize = "Bodysize: 0";
 
     }
 

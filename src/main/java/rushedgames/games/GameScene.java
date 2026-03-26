@@ -26,12 +26,12 @@ public class GameScene extends JPanel implements Runnable{
 
     AppleManager apple;
 
-    boolean test3 = true;
-
     double startTime;
     double currentTime;
     double delta;
     double drawIntervall;
+    double remainingTime;
+    long sleepBuffer;
     
     Font gameEnd;
     UIManager UI;
@@ -51,7 +51,7 @@ public class GameScene extends JPanel implements Runnable{
 
 
         FPS = 30;
-        frameCount = 0;
+        frameCount = 1;
         drawnFrames = 0;
         gameLoop = new Thread(this);
 
@@ -62,6 +62,7 @@ public class GameScene extends JPanel implements Runnable{
 
         delta = 0;
         drawIntervall = (double) 1 / FPS;
+        sleepBuffer = 5000000;
 
         UI = new UIManager(this);
 
@@ -94,10 +95,25 @@ public class GameScene extends JPanel implements Runnable{
                 frameCount++;
                 update();
                 repaint();
-                delta = 0;
+                delta -= drawIntervall;
 
                 if(frameCount == FPS){
                     frameCount = 0;
+                }
+
+            }
+            else{
+
+                remainingTime = (drawIntervall - delta) * 1000000000;
+
+                if(remainingTime > sleepBuffer){
+
+                    try{
+                        Thread.sleep(1);
+                    }
+                    catch(InterruptedException e){
+                        System.out.println("THREAD FEHLER");
+                    }
                 }
 
             }
